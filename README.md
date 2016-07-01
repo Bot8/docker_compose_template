@@ -34,8 +34,8 @@ In the *./compose* folder
 
 Available
 
-- database host = `db.vrukodelii.docker`
-- site host = `site.vrukodelii.docker`
+* database host = `db.vrukodelii.docker` dbname=vrukodelii, user=root, password=vrukodelii
+* site host = `site.vrukodelii.docker`
 ---
 #### TODO:
 * nodejs build
