@@ -1,0 +1,54 @@
+version: '2'
+services:
+  dnsdock:
+      image: tonistiigi/dnsdock
+      volumes:
+          - /var/run/docker.sock:/run/docker.sock
+      ports:
+          - 172.17.42.1:53:53/udp
+      command: '-domain="docker" -http=":8080"'
+  db:
+    image: mysql:5.7
+    volumes:
+      - "./.data/db:/var/lib/mysql"
+      - "./mysql/conf:/etc/mysql/conf.d"
+    restart: always
+    network_mode: "bridge"
+    ports:
+      - "3306:3306"
+    environment:
+      DNSDOCK_NAME: db
+      DNSDOCK_IMAGE: vrukodelii
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vrukodelii
+      MYSQL_USER: vrukodelii
+      MYSQL_PASSWORD: vrukodelii
+  php:
+    depends_on:
+      - db
+    build: ./php
+    links:
+      - db
+    volumes:
+      - "./php/etc:/usr/local/etc"
+      - "../site:/var/www/site"
+      - "./logs/php:/var/log/php"
+    restart: always
+    network_mode: "bridge"
+  nginx:
+      depends_on:
+        - php
+      image: nginx
+      links:
+        - php
+      volumes:
+        - "./nginx/etc:/etc/nginx"
+        - "../site:/var/www/site"
+        - "./logs/nginx:/var/log/nginx"
+      ports:
+        - "80:80"
+      restart: always
+      network_mode: "bridge"
+      environment:
+        DNSDOCK_NAME: site
+        DNSDOCK_IMAGE: vrukodelii
