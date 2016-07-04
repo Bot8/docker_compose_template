@@ -10,7 +10,7 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - "./.data/db:/var/lib/mysql"
+      - "database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
     restart: always
     network_mode: "bridge"
@@ -52,3 +52,6 @@ services:
       environment:
         DNSDOCK_NAME: site
         DNSDOCK_IMAGE: vrukodelii
+volumes:
+  database_data:
+    driver: local
