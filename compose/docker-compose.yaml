@@ -9,14 +9,14 @@ services:
       command: '-domain="docker" -http=":8080"'
   db:
     image: mysql:5.7
+    container_name: vrukodelii_mysql
+    restart: always
+    network_mode: "bridge"
     volumes:
       - "database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
-    restart: always
-    network_mode: "bridge"
     ports:
       - "3306:3306"
-    container_name: vrukodelii_mysql
     environment:
       DNSDOCK_NAME: db
       DNSDOCK_IMAGE: vrukodelii
@@ -28,31 +28,31 @@ services:
     depends_on:
       - db
     build: ./php
+    container_name: vrukodelii_php
     links:
       - db
+    restart: always
+    network_mode: "bridge"
     volumes:
       - "./php/etc:/usr/local/etc"
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
-    restart: always
-    container_name: vrukodelii_php
     working_dir: "/var/www/site"
-    network_mode: "bridge"
   nginx:
       depends_on:
         - php
       image: nginx
+      container_name: vrukodelii_nginx
       links:
         - php
+      restart: always
+      network_mode: "bridge"
       volumes:
         - "./nginx/etc:/etc/nginx"
         - "../site:/var/www/site"
         - "./logs/nginx:/var/log/nginx"
       ports:
         - "80:80"
-      restart: always
-      network_mode: "bridge"
-      container_name: vrukodelii_nginx
       working_dir: "/var/www/site"
       environment:
         DNSDOCK_NAME: site
