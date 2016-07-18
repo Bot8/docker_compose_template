@@ -27,7 +27,10 @@ ddns command
 ```docker run --name 'ddns' --restart=unless-stopped -d -v '/var/run/docker.sock:/run/docker.sock' -p '172.17.42.1:53:53/udp' tonistiigi/dnsdock -domain='docker' -http=':8080'```
 
 ##Rename project 'namespace'
-use ```./rename.sh new_project_name``` to rename you new project "namespace"
+* Renaming is very important!
+* new_project_name must be unic
+
+use ```./compose/rename.sh new_project_name``` to rename you new project "namespace"
 after that yours "mysql" and "nginx" will be available by host names "db.new_project_name.docker" and "site.new_project_name.docker"
 
 ## Use
@@ -45,7 +48,7 @@ In the *./compose* folder
 * site host = `site.my_project.docker`
 
 ##Artisan
-available via artisan.sh
+available via ./compose/artisan.sh
 
 ## TODO:
 * !fix mysql volume!
