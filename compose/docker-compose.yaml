@@ -1,37 +1,26 @@
 version: '2'
 services:
-  dnsdock:
-      image: tonistiigi/dnsdock
-      volumes:
-          - /var/run/docker.sock:/run/docker.sock
-      ports:
-          - 172.17.42.1:53:53/udp
-      command: '-domain="docker" -http=":8080"'
   db:
     image: mysql:5.7
-    container_name: vrukodelii_mysql
-    restart: always
+    container_name: my_project_mysql
     network_mode: "bridge"
     volumes:
       - "database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
-    ports:
-      - "3306:3306"
     environment:
       DNSDOCK_NAME: db
-      DNSDOCK_IMAGE: vrukodelii
+      DNSDOCK_IMAGE: my_project
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: vrukodelii
-      MYSQL_USER: vrukodelii
-      MYSQL_PASSWORD: vrukodelii
+      MYSQL_DATABASE: my_db
+      MYSQL_USER: my_db_user
+      MYSQL_PASSWORD: my_db_password
   php:
     depends_on:
       - db
     build: ./php
-    container_name: vrukodelii_php
+    container_name: my_project_php
     links:
       - db
-    restart: always
     network_mode: "bridge"
     volumes:
       - "./php/etc:/usr/local/etc"
@@ -42,21 +31,18 @@ services:
       depends_on:
         - php
       image: nginx
-      container_name: vrukodelii_nginx
+      container_name: my_project_nginx
       links:
         - php
-      restart: always
       network_mode: "bridge"
       volumes:
         - "./nginx/etc:/etc/nginx"
         - "../site:/var/www/site"
         - "./logs/nginx:/var/log/nginx"
-      ports:
-        - "80:80"
       working_dir: "/var/www/site"
       environment:
         DNSDOCK_NAME: site
-        DNSDOCK_IMAGE: vrukodelii
+        DNSDOCK_IMAGE: my_project
 volumes:
-  database_data:
+  my_database_data:
     driver: local

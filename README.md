@@ -23,6 +23,10 @@ Restart docker daemon after you have done that (`sudo service docker restart`).
 
 Also, to let the host machine discover the containers add `nameserver 172.17.42.1` to your `/etc/resolv.conf`.
 
+##Rename project 'namespace'
+use ```./rename.sh new_project_name``` to rename you new project "namespace"
+after that yours "mysql" and "nginx" will be available by host names "db.new_project_name.docker" and "site.new_project_name.docker"
+
 ## Use
 In the *./compose* folder
 ```bash
@@ -32,13 +36,13 @@ In the *./compose* folder
 
 **First start will be long!**
 
-Available
+##Available
 
-* database host = `db.vrukodelii.docker` dbname=vrukodelii, user=root, password=vrukodelii
-* site host = `site.vrukodelii.docker`
+* database host = `db.my_project.docker` dbname=my_db, user=my_db_user, password=my_db_password
+* site host = `site.my_project.docker`
 
+##Artisan
+available via artisan.sh
 
----
-#### TODO:
-* nodejs build
+## TODO:
 * composer install
