@@ -1,6 +1,6 @@
 version: '2'
 services:
-  db:
+  my_project_db:
     image: mysql:5.7
     container_name: my_project_mysql
     network_mode: "bridge"
@@ -14,13 +14,13 @@ services:
       MYSQL_DATABASE: my_db
       MYSQL_USER: my_db_user
       MYSQL_PASSWORD: my_db_password
-  php:
+  my_project_php:
     depends_on:
-      - db
+      - my_project_db
     build: ./php
     container_name: my_project_php
     links:
-      - db
+      - my_project_db
     network_mode: "bridge"
     volumes:
       - "./php/etc:/usr/local/etc"
@@ -29,11 +29,11 @@ services:
     working_dir: "/var/www/site"
   nginx:
       depends_on:
-        - php
+        - my_project_php
       image: nginx
       container_name: my_project_nginx
       links:
-        - php
+        - my_project_php
       network_mode: "bridge"
       volumes:
         - "./nginx/etc:/etc/nginx"
