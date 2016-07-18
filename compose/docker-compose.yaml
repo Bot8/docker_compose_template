@@ -5,7 +5,7 @@ services:
     container_name: my_project_mysql
     network_mode: "bridge"
     volumes:
-      - "database_data:/var/lib/mysql"
+      - "my_project_database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
     environment:
       DNSDOCK_NAME: db
@@ -44,5 +44,5 @@ services:
         DNSDOCK_NAME: site
         DNSDOCK_IMAGE: my_project
 volumes:
-  my_database_data:
+  my_project_database_data:
     driver: local
