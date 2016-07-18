@@ -48,4 +48,5 @@ In the *./compose* folder
 available via artisan.sh
 
 ## TODO:
+* !fix mysql volume!
 * composer install
