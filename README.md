@@ -23,6 +23,9 @@ Restart docker daemon after you have done that (`sudo service docker restart`).
 
 Also, to let the host machine discover the containers add `nameserver 172.17.42.1` to your `/etc/resolv.conf`.
 
+ddns command 
+```docker run --name 'ddns' --restart=unless-stopped -d -v '/var/run/docker.sock:/run/docker.sock' -p '172.17.42.1:53:53/udp' tonistiigi/dnsdock -domain='docker' -http=':8080'```
+
 ##Rename project 'namespace'
 use ```./rename.sh new_project_name``` to rename you new project "namespace"
 after that yours "mysql" and "nginx" will be available by host names "db.new_project_name.docker" and "site.new_project_name.docker"
