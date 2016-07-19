@@ -1,12 +1,5 @@
 version: '2'
 services:
-  dnsdock:
-      image: tonistiigi/dnsdock
-      volumes:
-          - /var/run/docker.sock:/run/docker.sock
-      ports:
-          - 172.17.42.1:53:53/udp
-      command: '-domain="docker" -http=":8080"'
   db:
     image: mysql:5.7
     container_name: vrukodelii_mysql
