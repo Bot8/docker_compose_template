@@ -52,4 +52,4 @@ available via ./compose/artisan.sh
 
 ## TODO:
 * !fix mysql volume!
-* composer install
+* install composer + https://github.com/hirak/prestissimo
