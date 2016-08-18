@@ -27,7 +27,7 @@ services:
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
     working_dir: "/var/www/site"
-  nginx:
+  my_project_nginx:
       depends_on:
         - my_project_php
       image: nginx
