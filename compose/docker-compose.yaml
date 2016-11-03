@@ -11,7 +11,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: project_db 
-      MYSQL_USER: p<A$EXMnB2JMfx`V
+      MYSQL_USER: p_db_user
       MYSQL_PASSWORD: p<A$EXMnB2JMfx`V
   project_php:
     depends_on:
