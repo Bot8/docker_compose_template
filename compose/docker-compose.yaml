@@ -1,48 +1,49 @@
 version: '2'
 services:
-  my_project_db:
+  project_db:
     image: mysql:5.7
-    container_name: my_project_mysql
-    network_mode: "bridge"
+    container_name: project_db 
+    expose:
+      - "3306"
     volumes:
-      - "my_project_database_data:/var/lib/mysql"
+      - "project_database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
     environment:
-      DNSDOCK_NAME: db
-      DNSDOCK_IMAGE: my_project
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: my_db
-      MYSQL_USER: my_db_user
-      MYSQL_PASSWORD: my_db_password
-  my_project_php:
+      MYSQL_DATABASE: project_db 
+      MYSQL_USER: p<A$EXMnB2JMfx`V
+      MYSQL_PASSWORD: p<A$EXMnB2JMfx`V
+  project_php:
     depends_on:
-      - my_project_db
+      - project_db
     build: ./php
-    container_name: my_project_php
-    links:
-      - my_project_db
-    network_mode: "bridge"
+    container_name: project_php
+    expose:
+      - "9000"
     volumes:
       - "./php/etc:/usr/local/etc"
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: project_db
+      DB_PORT: 3306        
+      DB_DATABASE: project_db
+      DB_USERNAME: p_db_user
+      DB_PASSWORD: p<A$EXMnB2JMfx`V  
     working_dir: "/var/www/site"
-  my_project_nginx:
+  project_nginx:
       depends_on:
-        - my_project_php
+        - project_php
       image: nginx
-      container_name: my_project_nginx
-      links:
-        - my_project_php
-      network_mode: "bridge"
+      ports:
+        - "80:80"
+      container_name: project_nginx
       volumes:
         - "./nginx/etc:/etc/nginx"
         - "../site:/var/www/site"
         - "./logs/nginx:/var/log/nginx"
       working_dir: "/var/www/site"
-      environment:
-        DNSDOCK_NAME: site
-        DNSDOCK_IMAGE: my_project
 volumes:
-  my_project_database_data:
+  project_database_data:
     driver: local
