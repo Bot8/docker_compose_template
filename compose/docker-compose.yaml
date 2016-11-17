@@ -3,10 +3,11 @@ services:
   project_db:
     image: mysql:5.7
     container_name: project_mysql
-    network_mode: "bridge"
     volumes:
       - "project_database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
+    expose:
+      - "3306"
     environment:
       DNSDOCK_NAME: db
       DNSDOCK_IMAGE: project
@@ -21,20 +22,22 @@ services:
     container_name: project_php
     links:
       - project_db
-    network_mode: "bridge"
     volumes:
       - "./php/etc:/usr/local/etc"
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
+    expose:
+      - "9000"
     working_dir: "/var/www/site"
   project_nginx:
       depends_on:
         - project_php
       image: nginx
       container_name: project_nginx
+      ports:
+        - "80:80"
       links:
         - project_php
-      network_mode: "bridge"
       volumes:
         - "./nginx/etc:/etc/nginx"
         - "../site:/var/www/site"
