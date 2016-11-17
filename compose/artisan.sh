@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker-compose run my_project_php php artisan $*
+docker-compose run project_php php artisan $*

@@ -1,39 +1,39 @@
 version: '2'
 services:
-  my_project_db:
+  project_db:
     image: mysql:5.7
-    container_name: my_project_mysql
+    container_name: project_mysql
     network_mode: "bridge"
     volumes:
-      - "my_project_database_data:/var/lib/mysql"
+      - "project_database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
     environment:
       DNSDOCK_NAME: db
-      DNSDOCK_IMAGE: my_project
+      DNSDOCK_IMAGE: project
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: my_db
       MYSQL_USER: my_db_user
       MYSQL_PASSWORD: my_db_password
-  my_project_php:
+  project_php:
     depends_on:
-      - my_project_db
+      - project_db
     build: ./php
-    container_name: my_project_php
+    container_name: project_php
     links:
-      - my_project_db
+      - project_db
     network_mode: "bridge"
     volumes:
       - "./php/etc:/usr/local/etc"
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
     working_dir: "/var/www/site"
-  my_project_nginx:
+  project_nginx:
       depends_on:
-        - my_project_php
+        - project_php
       image: nginx
-      container_name: my_project_nginx
+      container_name: project_nginx
       links:
-        - my_project_php
+        - project_php
       network_mode: "bridge"
       volumes:
         - "./nginx/etc:/etc/nginx"
@@ -42,7 +42,7 @@ services:
       working_dir: "/var/www/site"
       environment:
         DNSDOCK_NAME: site
-        DNSDOCK_IMAGE: my_project
+        DNSDOCK_IMAGE: project
 volumes:
-  my_project_database_data:
+  project_database_data:
     driver: local
