@@ -36,7 +36,7 @@ after that yours "mysql" and "nginx" will be available by host names "db.new_pro
 ## Use
 In the *./compose* folder
 ```bash
-[sudo] docker-conpose up [-d]
+[sudo] docker-compose up [-d]
 ```
  (```-d``` - run in detached mode)
 
