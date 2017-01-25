@@ -1,48 +1,77 @@
 version: '2'
 services:
-  project_db:
-    image: mysql:5.7
-    container_name: project_mysql
-    network_mode: "bridge"
-    volumes:
-      - "project_database_data:/var/lib/mysql"
-      - "./mysql/conf:/etc/mysql/conf.d"
-    environment:
-      DNSDOCK_NAME: db
-      DNSDOCK_IMAGE: project
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: my_db
-      MYSQL_USER: my_db_user
-      MYSQL_PASSWORD: my_db_password
-  project_php:
-    depends_on:
-      - project_db
-    build: ./php
-    container_name: project_php
-    network_mode: "bridge"
-    links:
-      - project_db
-    volumes:
-      - "./php/etc:/usr/local/etc"
-      - "../site:/var/www/site"
-      - "./logs/php:/var/log/php"
-    working_dir: "/var/www/site"
-  project_nginx:
+   project_db:
+      image: mysql:5.7
+      container_name: project_mysql
+      network_mode: "bridge"
+      volumes:
+         - "project_database_data:/var/lib/mysql"
+         - "./mysql/conf:/etc/mysql/conf.d"
+      environment:
+         DNSDOCK_NAME: db
+         DNSDOCK_IMAGE: project
+         MYSQL_ROOT_PASSWORD: root
+         MYSQL_DATABASE: my_db
+         MYSQL_USER: my_db_user
+         MYSQL_PASSWORD: my_db_password
+   project_php5.6:
       depends_on:
-        - project_php
+         - project_db
+      build: ./php5.6
+      container_name: project_php5.6
+      network_mode: "bridge"
+      links:
+         - project_db
+      volumes:
+         - "./php5.6/etc:/usr/local/etc"
+         - "../site:/var/www/site"
+         - "./logs/php:/var/log/php"
+   project_php7.0:
+      depends_on:
+         - project_db
+      build: ./php7.0
+      container_name: project_php7.0
+      network_mode: "bridge"
+      links:
+         - project_db
+      volumes:
+         - "./php7.0/etc:/usr/local/etc"
+         - "../site:/var/www/site"
+         - "./logs/php:/var/log/php"
+      working_dir: "/var/www/site"
+   project_php7.1:
+      depends_on:
+         - project_db
+      build: ./php7.1
+      container_name: project_php7.1
+      network_mode: "bridge"
+      links:
+         - project_db
+      volumes:
+         - "./php7.1/etc:/usr/local/etc"
+         - "../site:/var/www/site"
+         - "./logs/php:/var/log/php"
+      working_dir: "/var/www/site"
+   project_nginx:
+      depends_on:
+         - project_php5.6      
+         - project_php7.0
+         - project_php7.1
       image: nginx
       container_name: project_nginx
       network_mode: "bridge"
       links:
-        - project_php
+         - project_php5.6
+         - project_php7.0
+         - project_php7.1
       volumes:
-        - "./nginx/etc:/etc/nginx"
-        - "../site:/var/www/site"
-        - "./logs/nginx:/var/log/nginx"
+         - "./nginx/etc:/etc/nginx"
+         - "../site:/var/www/site"
+         - "./logs/nginx:/var/log/nginx"
       working_dir: "/var/www/site"
       environment:
-        DNSDOCK_NAME: site
-        DNSDOCK_IMAGE: project
+         DNSDOCK_NAME: site
+         DNSDOCK_IMAGE: project
 volumes:
-  project_database_data:
-    driver: local
+   project_database_data:
+      driver: local
