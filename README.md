@@ -30,11 +30,11 @@ ddns command
 * Renaming is very important!
 * new_project_name must be unic
 
-use ```./compose/rename.sh new_project_name``` to rename you new project "namespace"
+use ```./docker/rename.sh new_project_name``` to rename you new project "namespace"
 after that yours "mysql" and "nginx" will be available by host names "db.new_project_name.docker" and "site.new_project_name.docker"
 
 ## Use
-In the *./compose* folder
+In the *./docker* folder
 ```bash
 [sudo] docker-compose up [-d]
 ```
@@ -48,7 +48,7 @@ In the *./compose* folder
 * site host = `site.my_project.docker`
 
 ##Artisan
-available via ./compose/artisan.sh
+available via ./docker/artisan.sh
 
 ## TODO:
 * !fix mysql volume!
