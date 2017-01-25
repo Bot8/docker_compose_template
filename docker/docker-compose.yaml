@@ -7,8 +7,6 @@ services:
     volumes:
       - "project_database_data:/var/lib/mysql"
       - "./mysql/conf:/etc/mysql/conf.d"
-    expose:
-      - "3306"
     environment:
       DNSDOCK_NAME: db
       DNSDOCK_IMAGE: project
@@ -28,8 +26,6 @@ services:
       - "./php/etc:/usr/local/etc"
       - "../site:/var/www/site"
       - "./logs/php:/var/log/php"
-    expose:
-      - "9000"
     working_dir: "/var/www/site"
   project_nginx:
       depends_on:
@@ -37,8 +33,6 @@ services:
       image: nginx
       container_name: project_nginx
       network_mode: "bridge"
-      ports:
-        - "80:80"
       links:
         - project_php
       volumes:
