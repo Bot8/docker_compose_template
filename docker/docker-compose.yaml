@@ -21,6 +21,7 @@ services:
       - project_db
     build: ./php
     container_name: project_php
+    network_mode: "bridge"
     links:
       - project_db
     volumes:
